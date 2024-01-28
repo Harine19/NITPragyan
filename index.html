@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pollution and UV/Ozone Data</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            color:white; /* Dark gray text color */
+            background-image: url('bg.jpg');
+            /* filter: blur(8px); */
+            height: 100%; 
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-color:rgb(5, 39, 5);
+        }
+    
+        h1 {
+            /*background-color: #007bff; / Blue header background color */
+            color:black; /* White text color */
+            padding: 10px;
+            margin: 0;
+            text-align: center;
+        }
+
+        form {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input {
+            padding: 5px;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 5px 10px;
+            background-color: #5eed63; /* Blue button color */
+            color: pink; /* White text color */
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        h2 {
+            color: #007bff; /* Blue header color */
+        }
+
+        p {
+            margin: 5px 0;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 5px 0;
+        }
+        .cont{
+            border:1px solid green;
+            border-radius:100px;
+            margin-top:10%;
+        }
+    
+    </style>
+</head>
+<body style="background-image:url('back.jpeg');">
+    <div class="cont">
+
+   
+    <h1>Breathe.</h1>
+<div style="text-align:center;">
+    <form method="post">
+        <label for="cityInput">Enter City: </label>
+        <input type="text" id="cityInput" name="city">
+        <button type="submit">Get Pollution and UV/Ozone Data</button>
+    </form>
+
+    {% if city_data %}
+        
+        <p>State: {{ city_data['state'] }}</p>
+        <p>City: {{ city_data['city'] }}</p>
+        <p>Coordinates: Latitude={{ city_data['coordinates'][0] }}, Longitude={{ city_data['coordinates'][1] }}</p>
+
+       
+        <ul>
+            {% for pollutant in city_data['pollutant_data'] %}
+                <li>Pollutant ID: {{ pollutant['id'] }}, Average: {{ pollutant['avg'] }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No data available for the specified city.</p>
+    {% endif %}
+    {% if pollutant_ids %}
+    <h2>Pollutant IDs</h2>
+    <ul>
+        {% for id in pollutant_ids %}
+            <li>{{ id }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No pollutant IDs available for the specified city.</p>
+{% endif %}
+
+    
+
+    {% if uv_ozone_data %}
+        <h2>UV and Ozone Data</h2>
+        <p>UV: {{ uv_ozone_data['uv'] }}</p>
+        <p>Ozone: {{ uv_ozone_data['ozone'] }}</p>
+    {% else %}
+        <p>No UV and Ozone data available.</p>
+    {% endif %}
+   
+    
+
+{% if ml_result %}
+<p>Result: {{ ml_result }}</p>
+{% else %}
+    <p>No machine learning result available</p>
+{% endif %}
+
+</div>
+</div>
+</body>
+</html>
